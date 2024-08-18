@@ -1,9 +1,9 @@
-interface IModbusClient {
+export interface IModbusClient {
     readHoldingRegisters: (startRegister: number, count: number) => number[];
     writeHoldingRegisters: (startRegister: number, values: number[]) => void;
 }
 
-abstract class ModbusVariable {
+export abstract class ModbusVariable {
     name: string;
     holdingRegister: number;
     registerData: DataView;
@@ -24,7 +24,7 @@ abstract class ModbusVariable {
     }
 }
 
-class ModbusBooleanVariable extends ModbusVariable {
+export class ModbusBooleanVariable extends ModbusVariable {
     bitIndex: number;
 
     constructor(name: string, holdingRegister: number, registerArray: DataView, client: IModbusClient, bitIndex: number) {
@@ -57,7 +57,7 @@ class ModbusBooleanVariable extends ModbusVariable {
     }
 }
 
-class ModbusIntegerVariable extends ModbusVariable {
+export class ModbusIntegerVariable extends ModbusVariable {
     signed: boolean;
 
     constructor(name: string, holdingRegister: number, registerArray: DataView, client: IModbusClient, signed: boolean) {
@@ -84,7 +84,7 @@ class ModbusIntegerVariable extends ModbusVariable {
     }
 }
 
-class ModbusDoubleVariable extends ModbusIntegerVariable {
+export class ModbusDoubleVariable extends ModbusIntegerVariable {
     constructor(name: string, holdingRegister: number, registerArray: DataView, client: IModbusClient, signed: boolean) {
         super(name, holdingRegister, registerArray, client, signed);
     }
@@ -108,7 +108,7 @@ class ModbusDoubleVariable extends ModbusIntegerVariable {
     }
 }
 
-class ModbusByteVariable extends ModbusIntegerVariable {
+export class ModbusByteVariable extends ModbusIntegerVariable {
     byteIndex: number;
 
     constructor(name: string, holdingRegister: number, registerArray: DataView, client: IModbusClient, signed: boolean, byteIndex: number) {
