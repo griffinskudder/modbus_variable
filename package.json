@@ -1,8 +1,10 @@
 {
   "name": "modbus_variable",
   "version": "1.0.0",
+  "author": "Griffin Skudder <griffin@skudder.co.nz>",
   "description": "",
   "main": "index.ts",
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
