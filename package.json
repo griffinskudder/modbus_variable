@@ -6,7 +6,7 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/griffinskudder/modbus_variable/issues"
   },
-  "private": false
+  "private": false,
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
 }
