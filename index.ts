@@ -53,7 +53,8 @@ export class ModbusBooleanVariable extends ModbusVariable {
             default:
                 break;
         }
-        this.client.writeHoldingRegisters(this.holdingRegister, [parseInt(registerValue, 2)]);
+        this.registerData.setUint16(Math.floor(this.holdingRegister / 2), parseInt(registerValue, 2));
+        this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2))]);
     }
 }
 
