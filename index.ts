@@ -33,7 +33,7 @@ export class ModbusBooleanVariable extends ModbusVariable {
     }
 
     get value(): boolean {
-        const registerValue = this.registerData.getUint16(Math.floor(this.holdingRegister / 2)).toString(2).padStart(16, '0');
+        const registerValue = this.registerData.getUint16(Math.ceil(this.holdingRegister / 2)).toString(2).padStart(16, '0');
         switch (registerValue[this.bitIndex]) {
             case '0': return false
             case '1': return true
@@ -42,7 +42,7 @@ export class ModbusBooleanVariable extends ModbusVariable {
     }
 
     set value(value: boolean) {
-        let registerValue = this.registerData.getUint16(Math.floor(this.holdingRegister / 2)).toString(2).padStart(16, '0');
+        let registerValue = this.registerData.getUint16(Math.ceil(this.holdingRegister / 2)).toString(2).padStart(16, '0');
         switch (value) {
             case false:
                 registerValue = registerValue.substring(0, this.bitIndex) + '0' + registerValue.substring(this.bitIndex + 1);
@@ -53,8 +53,8 @@ export class ModbusBooleanVariable extends ModbusVariable {
             default:
                 break;
         }
-        this.registerData.setUint16(Math.floor(this.holdingRegister / 2), parseInt(registerValue, 2));
-        this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2))]);
+        this.registerData.setUint16(Math.ceil(this.holdingRegister / 2), parseInt(registerValue, 2));
+        this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2))]);
     }
 }
 
@@ -68,19 +68,19 @@ export class ModbusIntegerVariable extends ModbusVariable {
 
     get value(): number {
         if (this.signed) {
-                return this.registerData.getInt16(Math.floor(this.holdingRegister / 2));
+                return this.registerData.getInt16(Math.ceil(this.holdingRegister / 2));
         } else {
-            return this.registerData.getUint16(Math.floor(this.holdingRegister / 2));
+            return this.registerData.getUint16(Math.ceil(this.holdingRegister / 2));
         }
     }
 
     set value(value: number) {
         if (this.signed) {
-            this.registerData.setInt16(Math.floor(this.holdingRegister / 2), value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getInt16(Math.floor(this.holdingRegister / 2))]);
+            this.registerData.setInt16(Math.ceil(this.holdingRegister / 2), value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getInt16(Math.ceil(this.holdingRegister / 2))]);
         } else {
-            this.registerData.setUint16(Math.floor(this.holdingRegister / 2), value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2))]);
+            this.registerData.setUint16(Math.ceil(this.holdingRegister / 2), value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2))]);
         }
     }
 }
@@ -92,19 +92,19 @@ export class ModbusDoubleVariable extends ModbusIntegerVariable {
 
     get value(): number {
         if (this.signed) {
-            return this.registerData.getInt32(Math.floor(this.holdingRegister / 2));
+            return this.registerData.getInt32(Math.ceil(this.holdingRegister / 2));
         } else {
-            return this.registerData.getUint32(Math.floor(this.holdingRegister / 2));
+            return this.registerData.getUint32(Math.ceil(this.holdingRegister / 2));
         }
     }
 
     set value(value: number) {
         if (this.signed) {
-            this.registerData.setInt32(Math.floor(this.holdingRegister / 2), value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2)), this.registerData.getUint16(Math.floor(this.holdingRegister + 1 / 2))]);
+            this.registerData.setInt32(Math.ceil(this.holdingRegister / 2), value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2)), this.registerData.getUint16(Math.ceil(this.holdingRegister + 1 / 2))]);
         } else {
-            this.registerData.setUint32(Math.floor(this.holdingRegister / 2), value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2)), this.registerData.getUint16(Math.floor(this.holdingRegister + 1 / 2))]);
+            this.registerData.setUint32(Math.ceil(this.holdingRegister / 2), value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2)), this.registerData.getUint16(Math.ceil(this.holdingRegister + 1 / 2))]);
         }
     }
 }
@@ -119,19 +119,19 @@ export class ModbusByteVariable extends ModbusIntegerVariable {
 
     get value(): number {
         if (this.signed) {
-            return this.registerData.getInt8(Math.floor(this.holdingRegister / 2) + this.byteIndex);
+            return this.registerData.getInt8(Math.ceil(this.holdingRegister / 2) + this.byteIndex);
         } else {
-            return this.registerData.getUint8(Math.floor(this.holdingRegister / 2) + this.byteIndex);
+            return this.registerData.getUint8(Math.ceil(this.holdingRegister / 2) + this.byteIndex);
         }
     }
 
     set value(value: number) {
         if (this.signed) {
-            this.registerData.setInt8(Math.floor(this.holdingRegister / 2) + this.byteIndex, value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2) + this.byteIndex)]);
+            this.registerData.setInt8(Math.ceil(this.holdingRegister / 2) + this.byteIndex, value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2) + this.byteIndex)]);
         } else {
-            this.registerData.setUint8(Math.floor(this.holdingRegister / 2 + this.byteIndex), value);
-            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.floor(this.holdingRegister / 2))]);
+            this.registerData.setUint8(Math.ceil(this.holdingRegister / 2 + this.byteIndex), value);
+            this.client.writeHoldingRegisters(this.holdingRegister, [this.registerData.getUint16(Math.ceil(this.holdingRegister / 2))]);
         }
     }
 }
