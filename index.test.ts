@@ -20,7 +20,7 @@ const client = new ModbusClient();
 const buffer = new ArrayBuffer(8);
 const registerData = new DataView(buffer);
 
-const booleanData = {holdingRegister: 1, bitIndex: 1};
+const booleanData = {holdingRegister: 0, bitIndex: 0};
 
 const boolVar = new ModbusBooleanVariable(
     "Test Boolean",
@@ -30,14 +30,26 @@ const boolVar = new ModbusBooleanVariable(
     booleanData.bitIndex
 );
 
-test("ModbusBooleanVariable setter", () => {
+test("ModbusBooleanVariable", () => {
     boolVar.value = true;
     expect(boolVar.value).toBe(true);
     expect(client.writeHoldingRegisters.mock.calls).toHaveLength(1);
-    expect(client.writeHoldingRegisters.mock.calls[0][1]).toStrictEqual([Number.parseInt('0100000000000000', 2)])
+    expect(Number(client.writeHoldingRegisters.mock.calls[0][1]).toString(2)).toStrictEqual('1000000000000000')
 });
+const byteData = {holdingRegister: 0, byteIndex: 1, signed: false};
 
-test("ModbusBooleanVariable getter", () => {
-    expect(boolVar.value).toBe(true);
-});
+const byteVar = new ModbusByteVariable(
+    "Test Byte",
+    byteData.holdingRegister,
+    registerData,
+    client,
+    byteData.signed,
+    byteData.byteIndex
+);
 
+test("ModbusByteVariable", () => {
+    byteVar.value = 5;
+    expect(byteVar.value).toBe(5);
+    expect(client.writeHoldingRegisters.mock.calls).toHaveLength(2);
+    expect(Number(client.writeHoldingRegisters.mock.calls[1][1]).toString(2)).toStrictEqual('1000000000000101')
+})
